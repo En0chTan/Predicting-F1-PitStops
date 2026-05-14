@@ -173,7 +173,7 @@ def validate_dataframe(df, required_cols):
 # ─────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### 🏎️ Navigation")
-    page = st.radio("Page", ["📊 EDA Dashboard", "🤖 Model Evaluation"], label_visibility="collapsed")
+    page = st.radio("Page", ["EDA Dashboard", "Model Evaluation"], label_visibility="collapsed")
 
     st.markdown("---")
     st.markdown("### 📂 Data Upload")
@@ -206,13 +206,13 @@ with st.sidebar:
         st.info("Using synthetic mock data (3,000 samples)")
         data_status = "mock"
 
-    st.markdown("---")
     st.markdown("### 🔽 Filters")
+    st.caption("Leave filters empty to show all data, or select specific values to filter")
 
-    sel_drivers   = st.multiselect("Driver",   sorted(df['Driver'].unique()),   default=sorted(df['Driver'].unique())[:8])
-    sel_races     = st.multiselect("Race",     sorted(df['Race'].unique()),     default=sorted(df['Race'].unique()))
-    sel_years     = st.multiselect("Year",     sorted(df['Year'].unique()),     default=sorted(df['Year'].unique()))
-    sel_compounds = st.multiselect("Compound", sorted(df['Compound'].unique()), default=sorted(df['Compound'].unique()))
+    sel_drivers   = st.multiselect("Driver",   sorted(df['Driver'].unique()),   default=[])
+    sel_races     = st.multiselect("Race",     sorted(df['Race'].unique()),     default=[])
+    sel_years     = st.multiselect("Year",     sorted(df['Year'].unique()),     default=[])
+    sel_compounds = st.multiselect("Compound", sorted(df['Compound'].unique()), default=[])
     stint_range   = st.slider("Stint Range",
                                int(df['Stint'].min()), int(df['Stint'].max()),
                                (int(df['Stint'].min()), int(df['Stint'].max())))
@@ -245,7 +245,7 @@ st.markdown('<p class="sub-header">Advanced Analytics & Machine Learning Dashboa
 # ══════════════════════════════════════════════
 # PAGE 1 — EDA DASHBOARD
 # ══════════════════════════════════════════════
-if page == "📊 EDA Dashboard":
+if page == "EDA Dashboard":
 
     tabs = st.tabs(["🏁 Overview", "🛞 Tyre Analysis", "🏎️ Driver & Race",
                     "📍 Position & Stint", "⏱️ Lap Time & Degradation", "📅 Season Trends"])
@@ -595,7 +595,7 @@ if page == "📊 EDA Dashboard":
 # ══════════════════════════════════════════════
 # PAGE 2 — MODEL EVALUATION
 # ══════════════════════════════════════════════
-elif page == "🤖 Model Evaluation":
+elif page == "Model Evaluation":
 
     st.markdown('<p class="section-title">Model Selection & Pit Stop Prediction</p>', unsafe_allow_html=True)
     st.markdown('<div class="info-banner">Features used: TyreLife, Compound, Stint, Position, LapNumber, Driver, Race, Year &nbsp;|&nbsp; Target: PitStop &nbsp;|&nbsp; Split: 75/25</div>', unsafe_allow_html=True)
@@ -683,8 +683,7 @@ elif page == "🤖 Model Evaluation":
                         y=['No Pit Stop', 'Pit Stop'],
                         title='Confusion Matrix')
         fig.update_layout(**{k: v for k, v in LAYOUT.items()
-                             if k not in ['xaxis', 'yaxis', 'plot_bgcolor']},
-                          paper_bgcolor='rgba(0,0,0,0)')
+                             if k not in ['xaxis', 'yaxis', 'plot_bgcolor', 'paper_bgcolor']})
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
