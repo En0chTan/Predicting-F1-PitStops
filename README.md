@@ -130,6 +130,8 @@ Predicting-F1-PitStops/
    pip install -r requirements.txt
    ```
 
+   **Note**: The requirements.txt uses minimum version constraints for compatibility with different Python versions (3.8+). If you encounter compatibility issues, the versions will automatically resolve to compatible releases.
+
 4. **Run the Streamlit app**
    ```bash
    streamlit run app.py
